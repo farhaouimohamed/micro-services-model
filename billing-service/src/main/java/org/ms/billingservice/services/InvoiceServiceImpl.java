@@ -32,11 +32,22 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public InvoiceResponseDto save(InvoiceRequestDto invoiceRequestDto) {
+
+        Customer customer;
+        try {
+            customer = customerRestClient.getCustomer(invoiceRequestDto.getCustomerID());
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
         Invoice invoice = invoiceMapper.fromInvoiceRequestDto(invoiceRequestDto);
         invoice.setId(UUID.randomUUID().toString());
         invoice.setDate(new Date());
+        invoice.setCustomer(customer);
         Invoice savedInvoice = invoiceRepository.save(invoice);
+        savedInvoice.setCustomer(customerRestClient.getCustomer(savedInvoice.getCustomerID()));
         return invoiceMapper.fromInvoice(savedInvoice);
+
     }
 
     @Override
