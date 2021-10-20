@@ -26,7 +26,7 @@ public class InvoiceRestController {
         return invoiceService.getInvoice(invoiceId);
     }
 
-    @GetMapping(path = "/invoices/{customerId}")
+    @GetMapping(path = "/invoicesByCustomer/{customerId}")
     public List<InvoiceResponseDto> getInvoicesByCustomer(@PathVariable String customerId) {
         return invoiceService.invoicesByCustomerId(customerId);
     }
@@ -34,5 +34,10 @@ public class InvoiceRestController {
     @PostMapping(path = "/invoices")
     public InvoiceResponseDto save(@RequestBody InvoiceRequestDto invoiceRequestDto) {
         return invoiceService.save(invoiceRequestDto);
+    }
+
+    @GetMapping(path = "/invoices")
+    public List<InvoiceResponseDto> allInvoices(InvoiceRequestDto invoiceRequestDto) {
+        return invoiceService.listInvoices();
     }
 }
